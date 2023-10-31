@@ -207,8 +207,8 @@ if(BUILD_TESTING)
     ${CMAKE_BINARY_DIR}/googletest-prefix/include
   )
 
-  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
+  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
 
   set(GTEST_INCLUDE_DIR ${source_dir}/include)
   set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
@@ -218,6 +218,7 @@ if(BUILD_TESTING)
   set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
                 ${GTEST_LIBRARY_PATH} )
   add_dependencies(${GTEST_LIBRARY} googletest)
+
 endif()
 
 # serialize dependencies
