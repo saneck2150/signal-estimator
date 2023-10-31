@@ -204,6 +204,8 @@ if(BUILD_TESTING)
     LOG_INSTALL YES
   )
 
+  include_directories("${CMAKE_BINARY_DIR}/googletest-prefix/include")
+
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
 
