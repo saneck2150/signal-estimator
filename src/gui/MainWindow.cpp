@@ -26,6 +26,10 @@ MainWindow::MainWindow(IDeviceManager& device_manager, QWidget* parent)
     connect(signal_estimator_, &SignalEstimator::can_read, this,
         &MainWindow::read_graph_data);
 
+    ui->OutputSig->setCanvasBackground(QApplication::palette().base().color());
+    ui->ResultPlot1->setCanvasBackground(QApplication::palette().base().color());
+    ui->ResultPlot2->setCanvasBackground(QApplication::palette().base().color());
+
     outputCurve_->setPen(QColor(0x1F77B4));
     outputCurve_->attach(ui->OutputSig);
 
@@ -326,10 +330,7 @@ QStringList MainWindow::set_up_program_() {
     list.append(t);
 
     // Dumps
-    list.append("--dump-out");
-    list.append("-");
-
-    list.append("--dump-in");
+    list.append("--dump-file");
     list.append("-");
 
     t = ui->SigComp->cleanText();

@@ -222,6 +222,7 @@ Usage: signal-estimator [OPTIONS]
 
 Options:
   -h,--help                   Print this help message and exit
+  -L,--list-supported         Print supported features and exit
   -v,--verbose [0]            Increase verbosity level (can be used multiple times)
 
 Control options:
@@ -238,8 +239,10 @@ I/O options:
   -g,--gain FLOAT [0.8]       Output signal gain, from 0 to 1
   --in-latency UINT [8000]    Input ring buffer size, microseconds
   --in-periods UINT [2]       Number of periods in input ring buffer
+  --in-format TEXT [s16]      Input device sample format (see --list-supported)
   --out-latency UINT [8000]   Output ring buffer size, microseconds
   --out-periods UINT [2]      Number of periods in output ring buffer
+  --out-format TEXT [s16]     Output device sample format (see --list-supported)
   --no-rt                     Don't try using SCHED_RR policy
 
 Report options:
@@ -481,57 +484,47 @@ JSON output
 
 JSON output can be enabled by passing the `--report-format json` or `-f json` flag. By default, output is displayed in text format.
 
-Sample JSON output format for measuring latency is shown below.
+Sample JSON output format for measuring latency is shown below:
 
 ```
 [
-  {"dev":"hw:0", "sw_hw": 3.406247, "hw": 9.783531, "hw_avg": 3.406247},
-  {"dev":"hw:0", "sw_hw": 3.768061, "hw": 10.177324, "hw_avg": 3.768061},
-  {"dev":"hw:0", "sw_hw": 3.598191, "hw": 10.033534, "hw_avg": 3.598191},
-  {"dev":"hw:0", "sw_hw": 3.762508, "hw": 10.256863, "hw_avg": 3.762508},
-  {"dev":"hw:0", "sw_hw": 3.842750, "hw": 10.150537, "hw_avg": 3.842750},
-  {"dev":"hw:0", "sw_hw": 3.588736, "hw": 9.647981, "hw_avg": 3.588736},
-  {"dev":"hw:0", "sw_hw": 3.617144, "hw": 10.005338, "hw_avg": 3.617144},
-  {"dev":"hw:0", "sw_hw": 3.769689, "hw": 10.169054, "hw_avg": 3.769689}
+{"type": "latency", "device": "hw:0", "timestamp": 1698776522962310475, "sw_hw": 10.750376, "hw": 3.417044, "hw_avg": 3.417044},
+{"type": "latency", "device": "hw:0", "timestamp": 1698776523970598047, "sw_hw": 10.784796, "hw": 3.451464, "hw_avg": 3.434254},
+{"type": "latency", "device": "hw:0", "timestamp": 1698776524978383608, "sw_hw": 10.928465, "hw": 3.261799, "hw_avg": 3.376769},
+{"type": "latency", "device": "hw:0", "timestamp": 1698776525985503559, "sw_hw": 10.681216, "hw": 3.347884, "hw_avg": 3.369548}
 ]
 ```
 
-All the notations are the same as mentioned in the text reports. All time units are in milliseconds.
+All the notations are the same as mentioned in the text reports. "timestamp" field defines report time in nanoseconds since Unix Epoch. Measured values are in milliseconds.
 
 Dumping streams
 ---------------
 
-In any mode, you can specify `--dump-out` and `--dump-in` options to dump output and input samples and their timestamps to file or stdout (use `-`), in CSV format.
+In any mode, you can specify `--dump-file` option to dump output and input samples and their timestamps to file or stdout (use `-`), in CSV format.
 
 To reduce the file size, the tool can dump only one (average) value per frame of the size specified by `--dump-compression` option (disabled by default).
 
-The timestamps in the dumped files correspond to the estimate time, in nanoseconds, when the sample was written to hardware or read from hardware. The clock starts from an unspecified point.
+The timestamps in the dumped files correspond to the estimate time, in nanoseconds since Unix Epoch, when the sample was written to hardware or read from hardware.
 
 ```
-$ sudo signal-estimator -vv -m latency_step -o hw:0 -i hw:0 -d 5 \
-    --dump-out output.csv --dump-in input.csv
-...
+sudo signal-estimator -vv -m latency_step -o hw:0 -i hw:0 -d 5 --dump-file dump.csv
 ```
 
-The command above will produce two files:
+There is a helper script that plots the dump file using matplotlib. You can use it to manually inspect the signal:
 
 ```
-$ ls -lh *.csv
--rw-r--r-- 1 user user  13K Jan 15 16:22 output.csv
--rw-r--r-- 1 user user 118K Jan 15 16:22 input.csv
+./script/plot_dump.py [--device <device>] dump.csv
 ```
 
-There is a helper script that plots the dump files using matplotlib. You can use it to manually inspect the signal:
-
-```
-$ ./script/plot_csv.py [--device <device>] <output.csv> <input.csv>
-```
-
-![](./doc/plot_edited.png)
+![](./doc/dump_plot_edited.png)
 
 In this example we were measuring the latency of an Android phone with AirPods connected via Bluetooth, and the measured latency was about 238 ms.
 
-If output and input dumps were written to the same file, you can pass to the script just that one file. If dump includes multiple input devices, you should choose which one to display using `--device` option of the script.
+If dump includes multiple input devices, you should choose which one to display using `--device` option, e.g.:
+
+```
+./script/plot_dump.py --device hw:1 dump.csv
+```
 
 ALSA parameters
 ---------------

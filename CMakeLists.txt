@@ -130,6 +130,8 @@ add_library(base_objects OBJECT
   src/base/io/AlsaReader.cpp
   src/base/io/AlsaUtils.cpp
   src/base/io/AlsaWriter.cpp
+  src/base/io/PcmFormat.cpp
+  src/base/io/PcmMapper.cpp
   src/base/processing/ContinuousGenerator.cpp
   src/base/processing/CorrelationLatencyEstimator.cpp
   src/base/processing/IOJitterEstimator.cpp
@@ -161,8 +163,9 @@ target_include_directories(base_objects
   )
 
 add_executable(signal-estimator
-  src/cli/Formatter.cpp
+  src/cli/Format.cpp
   src/cli/Main.cpp
+  src/cli/Print.cpp
   )
 
 add_dependencies(signal-estimator
