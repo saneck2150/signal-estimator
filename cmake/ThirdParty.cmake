@@ -204,25 +204,19 @@ if(BUILD_TESTING)
     LOG_INSTALL YES
   )
 
-  add_library(libgtest INTERFACE)
-  add_dependencies(libgtest gtest)
-  target_link_libraries(libgtest
-    INTERFACE Threads::Threads
-              "${binary_dir}/libgtest_main.a"
-              "${binary_dir}/libgtest.a")
-  target_include_directories(libgtest INTERFACE "${source_dir}/include")
+  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
+  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
 
-  #link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
-  #link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
+  set(GTEST_INCLUDE_DIR ${source_dir}/include)
+  set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+  set(GTEST_LIBRARY gtest)
+  set(GTEST_MAIN_LIBRARY "${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}")
 
-  #set(GTEST_INCLUDE_DIR ${source_dir}/include)
-  #set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
-  #set(GTEST_LIBRARY gtest)
   
-  #add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
-  #set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
-  #             ${GTEST_LIBRARY_PATH} )
-  #add_dependencies(${GTEST_LIBRARY} googletest)
+  add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
+  set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
+               ${GTEST_LIBRARY_PATH} )
+  add_dependencies(${GTEST_LIBRARY} googletest)
 
 endif()
 
