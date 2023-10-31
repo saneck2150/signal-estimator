@@ -203,23 +203,15 @@ if(BUILD_TESTING)
     LOG_BUILD YES
     LOG_INSTALL YES
   )
-  include_directories(SYSTEM
-    ${CMAKE_BINARY_DIR}/googletest-prefix/include
-  )
 
-  link_libraries(
-  ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/spdlog-prefix/lib/${LIBPREFIX}spdlog${LIBSUFFIX}
-  )
+  add_library(libgtest INTERFACE)
+  add_dependencies(libgtest gtest)
+  target_link_libraries(libgtest
+    INTERFACE Threads::Threads
+              "${binary_dir}/libgtest_main.a"
+              "${binary_dir}/libgtest.a")
+  target_include_directories(libgtest INTERFACE "${source_dir}/include")
 
-  include_directories(
-  "${CMAKE_CURRENT_BINARY_DIR}/googletest-src/googletest/include"
-  )
-
-  link_directories(
-  "${CMAKE_CURRENT_BINARY_DIR}/googletest-build/lib"
-  )
-
-  #set (GTEST_MAIN_LIBRARY 3rdparty/googletest/googletest/include/gtest/gtest.h)
   #link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
   #link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
 
