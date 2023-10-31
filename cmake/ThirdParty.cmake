@@ -156,9 +156,9 @@ checkout_submodule(
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cli11
 )
 ExternalProject_Add(cli11_lib
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cli11
-  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/cli11-build
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/cli11-prefix
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-build
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix
   CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
     -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
@@ -181,44 +181,37 @@ include_directories(SYSTEM
 )
 
 #google test
-
-if(BUILD_TESTING)
-  ExternalProject_Add(
-    googletest_lib
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest
-    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-build
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-      -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-      -DCMAKE_C_COMPILER_TARGET=${CMAKE_C_COMPILER_TARGET}
-      -DCMAKE_CXX_COMPILER_TARGET=${CMAKE_CXX_COMPILER_TARGET}
-      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-      -DCMAKE_AR=${CMAKE_AR}
-      -DCMAKE_RANLIB=${CMAKE_RANLIB}
-      -DCMAKE_STRIP=${CMAKE_STRIP}
-    LOG_DOWNLOAD YES
-    LOG_CONFIGURE YES
-    LOG_BUILD YES
-    LOG_INSTALL YES
+if (BUILD_TESTING)
+  checkout_submodule(
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest
+  )
+  ExternalProject_Add(googletest_lib
+      SOURCE_DIR "${CMAKE_BINARY_DIR}/googletest-src"
+      BINARY_DIR "${CMAKE_BINARY_DIR}/googletest-build"
+      PREFIX "${CMAKE_BINARY_DIR}/googletest-prefix"
+      CMAKE_ARGS 
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+        -DCMAKE_C_COMPILER_TARGET=${CMAKE_C_COMPILER_TARGET}
+        -DCMAKE_CXX_COMPILER_TARGET=${CMAKE_CXX_COMPILER_TARGET}
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_AR=${CMAKE_AR}
+        -DCMAKE_RANLIB=${CMAKE_RANLIB}
+        -DCMAKE_STRIP=${CMAKE_STRIP}
+      LOG_DOWNLOAD YES
+      LOG_CONFIGURE YES
+      LOG_BUILD YES
+      LOG_INSTALL YES
   )
 
+  include_directories(SYSTEM "${CMAKE_BINARY_DIR}/googletest-prefix/include")
+
   include_directories("${CMAKE_BINARY_DIR}/googletest-prefix/include")
+  link_directories("${CMAKE_BINARY_DIR}/googletest-prefix/lib")
 
-  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
-  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
-
-  set(GTEST_INCLUDE_DIR ${source_dir}/include)
-  set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
-  set(GTEST_LIBRARY gtest)
-  set(GTEST_MAIN_LIBRARY "${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}")
-
-  
-  add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
-  set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
-               ${GTEST_LIBRARY_PATH} )
-  add_dependencies(${GTEST_LIBRARY} googletest)
+  link_libraries(gtest)
+  link_libraries(gtest_main)
 
 endif()
 
