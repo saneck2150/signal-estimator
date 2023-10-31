@@ -207,6 +207,7 @@ if(BUILD_TESTING)
     ${CMAKE_BINARY_DIR}/googletest-prefix/include
   )
 
+  set (CMAKE_MAIN_LIBRARY 3rdparty/googletest/googletest/include/gtest/gtest.h)
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
 
