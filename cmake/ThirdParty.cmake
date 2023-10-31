@@ -207,18 +207,30 @@ if(BUILD_TESTING)
     ${CMAKE_BINARY_DIR}/googletest-prefix/include
   )
 
-  set (GTEST_MAIN_LIBRARY 3rdparty/googletest/googletest/include/gtest/gtest.h)
-  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
-  link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
+  link_libraries(
+  ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/spdlog-prefix/lib/${LIBPREFIX}spdlog${LIBSUFFIX}
+  )
 
-  set(GTEST_INCLUDE_DIR ${source_dir}/include)
-  set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
-  set(GTEST_LIBRARY gtest)
+  include_directories(
+  "${CMAKE_CURRENT_BINARY_DIR}/googletest-src/googletest/include"
+  )
+
+  link_directories(
+  "${CMAKE_CURRENT_BINARY_DIR}/googletest-build/lib"
+  )
+
+  #set (GTEST_MAIN_LIBRARY 3rdparty/googletest/googletest/include/gtest/gtest.h)
+  #link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
+  #link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
+
+  #set(GTEST_INCLUDE_DIR ${source_dir}/include)
+  #set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+  #set(GTEST_LIBRARY gtest)
   
-  add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
-  set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
-                ${GTEST_LIBRARY_PATH} )
-  add_dependencies(${GTEST_LIBRARY} googletest)
+  #add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
+  #set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
+  #             ${GTEST_LIBRARY_PATH} )
+  #add_dependencies(${GTEST_LIBRARY} googletest)
 
 endif()
 
