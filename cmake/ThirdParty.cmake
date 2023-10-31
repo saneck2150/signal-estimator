@@ -209,6 +209,15 @@ if(BUILD_TESTING)
 
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest${LIBSUFFIX})
   link_libraries(${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix/lib/${LIBPREFIX}gtest_main${LIBSUFFIX})
+
+  set(GTEST_INCLUDE_DIR ${source_dir}/include)
+  set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+  set(GTEST_LIBRARY gtest)
+
+  add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
+  set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
+                ${GTEST_LIBRARY_PATH} )
+  add_dependencies(${GTEST_LIBRARY} googletest)
 endif()
 
 # serialize dependencies
