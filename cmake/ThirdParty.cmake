@@ -156,9 +156,9 @@ checkout_submodule(
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cli11
 )
 ExternalProject_Add(cli11_lib
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest
-  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-build
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/googletest-prefix
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cli11
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/cli11-build
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/cli11-prefix
   CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
     -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
@@ -186,9 +186,9 @@ if (BUILD_TESTING)
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest
   )
   ExternalProject_Add(googletest_lib
-      SOURCE_DIR "${CMAKE_BINARY_DIR}/googletest-src"
-      BINARY_DIR "${CMAKE_BINARY_DIR}/googletest-build"
-      PREFIX "${CMAKE_BINARY_DIR}/googletest-prefix"
+      SOURCE_DIR ${CMAKE_BINARY_DIR}/googletest-src
+      BINARY_DIR ${CMAKE_BINARY_DIR}/googletest-build
+      PREFIX ${CMAKE_BINARY_DIR}/googletest-prefix
       CMAKE_ARGS 
         -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
@@ -205,10 +205,10 @@ if (BUILD_TESTING)
       LOG_INSTALL YES
   )
 
-  include_directories(SYSTEM "${CMAKE_BINARY_DIR}/googletest-prefix/include")
+  include_directories(SYSTEM ${CMAKE_BINARY_DIR}/googletest-prefix/include)
 
-  include_directories("${CMAKE_BINARY_DIR}/googletest-prefix/include")
-  link_directories("${CMAKE_BINARY_DIR}/googletest-prefix/lib")
+  include_directories(${CMAKE_BINARY_DIR}/googletest-prefix/include)
+  link_directories(${CMAKE_BINARY_DIR}/googletest-prefix/lib)
 
   link_libraries(gtest)
   link_libraries(gtest_main)
