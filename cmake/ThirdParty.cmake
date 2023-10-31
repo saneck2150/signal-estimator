@@ -213,7 +213,8 @@ if(BUILD_TESTING)
   set(GTEST_INCLUDE_DIR ${source_dir}/include)
   set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
   set(GTEST_LIBRARY gtest)
-
+  set(GTEST_MAIN_LIBRARY gtest_main)
+  
   add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
   set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
                 ${GTEST_LIBRARY_PATH} )
