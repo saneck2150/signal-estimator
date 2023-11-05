@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
-    <height>984</height>
+    <width>801</width>
+    <height>912</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -22,7 +22,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QTabWidget" name="DCLabel">
+     <widget class="QTabWidget" name="Tabs">
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -36,7 +36,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>850</height>
+            <height>0</height>
            </size>
           </property>
           <property name="frameShape">
@@ -45,13 +45,13 @@
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <widget class="QWidget" name="scrollAreaContents">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>748</width>
-             <height>850</height>
+             <width>767</width>
+             <height>775</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -71,6 +71,12 @@
              <layout class="QGridLayout" name="gridLayout">
               <item row="1" column="1">
                <widget class="QComboBox" name="OutputDevice">
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
+                <property name="frame">
+                 <bool>true</bool>
+                </property>
                 <item>
                  <property name="text">
                   <string>default</string>
@@ -129,6 +135,9 @@
               </item>
               <item row="4" column="1">
                <widget class="QComboBox" name="InputDevice">
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
+                </property>
                 <item>
                  <property name="text">
                   <string>default</string>
@@ -137,28 +146,6 @@
                </widget>
               </item>
              </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="Padding1">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>10</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>10</height>
-               </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-             </widget>
             </item>
             <item>
              <widget class="QFrame" name="Buttons">
@@ -262,33 +249,36 @@
              </widget>
             </item>
             <item>
-             <widget class="QFrame" name="Padding3">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>10</height>
-               </size>
-              </property>
+             <widget class="QLabel" name="Padding">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
                 <height>10</height>
                </size>
               </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
+              <property name="text">
+               <string/>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QwtPlot" name="OutputSig">
+             <widget class="QwtPlot" name="SignalPlot">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>150</height>
+                <height>160</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="autoReplot">
@@ -297,59 +287,45 @@
              </widget>
             </item>
             <item>
-             <widget class="QFrame" name="Padding2">
+             <widget class="QwtPlot" name="ResultPlot1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>10</height>
+                <height>160</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>10</height>
+                <height>16777215</height>
                </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QwtPlot" name="ResultPlot1">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>150</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QFrame" name="Padding4">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>10</height>
-               </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QwtPlot" name="ResultPlot2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>150</height>
+                <height>160</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
                </size>
               </property>
              </widget>
@@ -376,7 +352,7 @@
              <property name="minimumSize">
               <size>
                <width>280</width>
-               <height>12</height>
+               <height>15</height>
               </size>
              </property>
              <property name="toolTip">
@@ -414,6 +390,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="WarmupLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -499,6 +481,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="ChannelCountLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -528,6 +516,12 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="SignalGainLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -563,6 +557,12 @@
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="OutputBufferLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -598,6 +598,12 @@
            </item>
            <item row="4" column="0">
             <widget class="QLabel" name="OutputPeriodsLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -628,8 +634,14 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="6" column="0">
             <widget class="QLabel" name="InputBufferLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -641,7 +653,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
+           <item row="6" column="1">
             <widget class="QSpinBox" name="InputBuffer">
              <property name="toolTip">
               <string>Input ring buffer size, microseconds</string>
@@ -663,8 +675,14 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
+           <item row="7" column="0">
             <widget class="QLabel" name="InputPeriodsLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -676,7 +694,7 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
+           <item row="7" column="1">
             <widget class="QSpinBox" name="InputPeriods">
              <property name="toolTip">
               <string>Number of periods in input ring buffer</string>
@@ -695,8 +713,14 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="0">
+           <item row="9" column="0">
             <widget class="QLabel" name="RealtimeLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>14</height>
+              </size>
+             </property>
              <property name="text">
               <string>Real-Time Scheduling:</string>
              </property>
@@ -705,7 +729,7 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="1">
+           <item row="9" column="1">
             <widget class="QCheckBox" name="Realtime">
              <property name="toolTip">
               <string>Try to enable SCHED_RR scheduling policy for sensitive I/O threads</string>
@@ -714,6 +738,52 @@
               <string>Try enabling SCHED_RR</string>
              </property>
              <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="OutputFormatLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Output Sample Format:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="OutputFormat">
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="InputFormatLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Input Sample Format:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QComboBox" name="InputFormat">
+             <property name="editable">
               <bool>true</bool>
              </property>
             </widget>
@@ -767,6 +837,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="SigCompLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -860,6 +936,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="PeakDWLLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -889,6 +971,12 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="PeakToNoiseMRTLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -959,6 +1047,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="StepLengthLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -994,6 +1088,12 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="StepDWLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -1026,6 +1126,12 @@
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="StepDTLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -1102,6 +1208,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="SigDTLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -1134,6 +1246,12 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="GliDWLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -1163,6 +1281,12 @@
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="GliDTLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -1224,10 +1348,13 @@
            <item row="0" column="1">
             <widget class="QSpinBox" name="IOJitWindow">
              <property name="toolTip">
-              <string>I/O jitter detection window, number of periods</string>
+              <string>I/O jitter SMA window, number of periods</string>
              </property>
              <property name="suffix">
               <string> periods</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
              </property>
              <property name="maximum">
               <number>2147483647</number>
@@ -1239,6 +1366,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="IOJitPercentileLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
              <property name="toolTip">
               <string/>
              </property>
@@ -1263,6 +1396,50 @@
              </property>
              <property name="value">
               <number>95</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="IODelayOptions">
+          <property name="title">
+           <string>I/O Delay Estimation</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_9">
+           <item row="0" column="0">
+            <widget class="QLabel" name="IODelayWindowLabel">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>15</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>I/O Delay Window:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="IODelayWindow">
+             <property name="toolTip">
+              <string>I/O delay SMA window, number of periods</string>
+             </property>
+             <property name="suffix">
+              <string> periods</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>2147483647</number>
+             </property>
+             <property name="value">
+              <number>250</number>
              </property>
             </widget>
            </item>
@@ -1300,7 +1477,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>782</width>
+     <width>801</width>
      <height>26</height>
     </rect>
    </property>

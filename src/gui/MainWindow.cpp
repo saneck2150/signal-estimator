@@ -2,8 +2,11 @@
 // Licensed under MIT
 
 #include "MainWindow.hpp"
+#include "ListValidator.hpp"
 #include "RightClickPickerMachine.hpp"
 #include "ui_MainWindow.h"
+
+#include "io/PcmFormat.hpp"
 
 #include <QCheckBox>
 #include <QList>
@@ -26,15 +29,15 @@ MainWindow::MainWindow(IDeviceManager& device_manager, QWidget* parent)
     connect(signal_estimator_, &SignalEstimator::can_read, this,
         &MainWindow::read_graph_data);
 
-    ui->OutputSig->setCanvasBackground(QApplication::palette().base().color());
+    ui->SignalPlot->setCanvasBackground(QApplication::palette().base().color());
     ui->ResultPlot1->setCanvasBackground(QApplication::palette().base().color());
     ui->ResultPlot2->setCanvasBackground(QApplication::palette().base().color());
 
     outputCurve_->setPen(QColor(0x1F77B4));
-    outputCurve_->attach(ui->OutputSig);
+    outputCurve_->attach(ui->SignalPlot);
 
     inputCurve_->setPen(QColor(0xFF7F0E));
-    inputCurve_->attach(ui->OutputSig);
+    inputCurve_->attach(ui->SignalPlot);
 
     {
         data1Curve_->setPen(QColor(0xBA2D0B), 2);
@@ -83,40 +86,40 @@ MainWindow::MainWindow(IDeviceManager& device_manager, QWidget* parent)
         data3Curve_->attach(ui->ResultPlot2);
     }
 
-    ui->OutputSig->insertLegend(new QwtLegend(), QwtPlot::BottomLegend);
+    ui->SignalPlot->insertLegend(new QwtLegend(), QwtPlot::BottomLegend);
     ui->ResultPlot1->insertLegend(new QwtLegend(), QwtPlot::BottomLegend);
     ui->ResultPlot2->insertLegend(new QwtLegend(), QwtPlot::BottomLegend);
 
     grid1_->setMajorPen(Qt::black, 0.0, Qt::DotLine);
-    grid1_->attach(ui->OutputSig);
+    grid1_->attach(ui->SignalPlot);
     grid2_->setMajorPen(Qt::black, 0.0, Qt::DotLine);
     grid2_->attach(ui->ResultPlot1);
     grid3_->setMajorPen(Qt::black, 0.0, Qt::DotLine);
     grid3_->attach(ui->ResultPlot2);
 
-    QwtPlotPicker* zoomInPicker = new QwtPlotPicker(ui->OutputSig->canvas());
+    QwtPlotPicker* zoomInPicker = new QwtPlotPicker(ui->SignalPlot->canvas());
     zoomInPicker->setStateMachine(new QwtPickerDragRectMachine());
     zoomInPicker->setRubberBand(QwtPicker::RectRubberBand);
     zoomInPicker->setRubberBandPen(QPen(QColor(Qt::red)));
     connect(zoomInPicker, qOverload<const QRectF&>(&QwtPlotPicker::selected),
         [this](const QRectF& rect) {
-            ui->OutputSig->setAxisScale(
+            ui->SignalPlot->setAxisScale(
                 QwtPlot::xBottom, rect.topLeft().x(), rect.bottomRight().x());
-            ui->OutputSig->setAxisScale(
+            ui->SignalPlot->setAxisScale(
                 QwtPlot::yLeft, rect.topLeft().y(), rect.bottomLeft().y());
-            ui->OutputSig->replot();
+            ui->SignalPlot->replot();
         });
 
-    QwtPlotPicker* zoomOutPicker = new QwtPlotPicker(ui->OutputSig->canvas());
+    QwtPlotPicker* zoomOutPicker = new QwtPlotPicker(ui->SignalPlot->canvas());
     zoomOutPicker->setStateMachine(new RightClickPickerMachine());
     connect(zoomOutPicker, qOverload<const QPointF&>(&QwtPlotPicker::selected),
         [this](const QPointF&) {
-            ui->OutputSig->setAxisAutoScale(QwtPlot::xBottom);
-            ui->OutputSig->setAxisAutoScale(QwtPlot::yLeft);
-            ui->OutputSig->replot();
+            ui->SignalPlot->setAxisAutoScale(QwtPlot::xBottom);
+            ui->SignalPlot->setAxisAutoScale(QwtPlot::yLeft);
+            ui->SignalPlot->replot();
         });
 
-    QwtPlotPicker* trackPicker1 = new QwtPlotPicker(ui->OutputSig->canvas());
+    QwtPlotPicker* trackPicker1 = new QwtPlotPicker(ui->SignalPlot->canvas());
     trackPicker1->setStateMachine(new QwtPickerTrackerMachine());
     trackPicker1->setTrackerPen(QApplication::palette().text().color());
     trackPicker1->setTrackerMode(QwtPlotPicker::DisplayMode::AlwaysOn);
@@ -131,20 +134,27 @@ MainWindow::MainWindow(IDeviceManager& device_manager, QWidget* parent)
     trackPicker3->setTrackerPen(QApplication::palette().text().color());
     trackPicker3->setTrackerMode(QwtPlotPicker::DisplayMode::AlwaysOn);
 
-    const std::vector<std::string> in_devices = device_manager_.get_input_devices();
-    const std::vector<std::string> out_devices = device_manager_.get_output_devices();
+    for (const auto& dev : device_manager_.get_input_devices()) {
+        ui->InputDevice->addItem(QString::fromStdString(dev));
+    }
 
-    auto to_list = [](const std::vector<std::string>& device_names) {
-        QList<QString> result;
-        result.reserve(static_cast<int>(device_names.size()));
-        for (const std::string& device_name : device_names) {
-            result.push_back(QString::fromStdString(device_name));
-        }
-        return result;
-    };
+    for (const auto& dev : device_manager_.get_output_devices()) {
+        ui->OutputDevice->addItem(QString::fromStdString(dev));
+    }
 
-    ui->InputDevice->addItems(to_list(in_devices));
-    ui->OutputDevice->addItems(to_list(out_devices));
+    QStringList formats;
+    for (const auto& fmt : PcmFormat::supported_formats()) {
+        formats.append(QString::fromStdString(fmt.to_string()));
+    }
+
+    ui->InputFormat->addItems(formats);
+    ui->OutputFormat->addItems(formats);
+
+    ui->InputFormat->setValidator(new ListValidator(formats, this));
+    ui->OutputFormat->setValidator(new ListValidator(formats, this));
+
+    ui->InputFormat->setCurrentText(QString::fromStdString(PcmFormat().to_string()));
+    ui->OutputFormat->setCurrentText(QString::fromStdString(PcmFormat().to_string()));
 
     display_latency_text_();
 
@@ -176,8 +186,8 @@ void MainWindow::on_StartButton_released() {
     data3_.clear_buf();
 
     // reset graphs
-    ui->OutputSig->updateAxes();
-    ui->OutputSig->replot();
+    ui->SignalPlot->updateAxes();
+    ui->SignalPlot->replot();
     ui->ResultPlot1->updateAxes();
     ui->ResultPlot1->replot();
     ui->ResultPlot2->updateAxes();
@@ -237,8 +247,8 @@ void MainWindow::update_graphs() {
     data2Curve_->setSamples(data2_current);
     data3Curve_->setSamples(data3_current);
 
-    ui->OutputSig->setAxisScale(QwtPlot::xBottom, xMin, xMax);
-    ui->OutputSig->replot();
+    ui->SignalPlot->setAxisScale(QwtPlot::xBottom, xMin, xMax);
+    ui->SignalPlot->replot();
     ui->ResultPlot1->setAxisScale(QwtPlot::xBottom, xMin, xMax);
     ui->ResultPlot1->replot();
     ui->ResultPlot2->setAxisScale(QwtPlot::xBottom, xMin, xMax);
@@ -312,12 +322,20 @@ QStringList MainWindow::set_up_program_() {
     list.append("--out-periods");
     list.append(t);
 
+    t = ui->OutputFormat->currentText();
+    list.append("--out-format");
+    list.append(t);
+
     t = ui->InputBuffer->cleanText();
     list.append("--in-latency");
     list.append(t);
 
     t = ui->InputPeriods->cleanText();
     list.append("--in-periods");
+    list.append(t);
+
+    t = ui->InputFormat->currentText();
+    list.append("--in-format");
     list.append(t);
 
     if (!ui->Realtime->isChecked()) {
@@ -391,6 +409,11 @@ QStringList MainWindow::set_up_program_() {
 
     t = ui->IOJitPercentile->cleanText();
     list.append("--io-jitter-percentile");
+    list.append(t);
+
+    // IODelay
+    t = ui->IODelayWindow->cleanText();
+    list.append("--io-delay-window");
     list.append(t);
 
     return list;

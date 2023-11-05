@@ -134,6 +134,7 @@ add_library(base_objects OBJECT
   src/base/io/PcmMapper.cpp
   src/base/processing/ContinuousGenerator.cpp
   src/base/processing/CorrelationLatencyEstimator.cpp
+  src/base/processing/IODelayEstimator.cpp
   src/base/processing/IOJitterEstimator.cpp
   src/base/processing/Impulse.cpp
   src/base/processing/ImpulseGenerator.cpp
@@ -205,6 +206,7 @@ if(BUILD_GUI)
   find_package(Qwt REQUIRED)
 
   qt5_wrap_cpp(GENERATED_SOURCES
+    src/gui/ListValidator.hpp
     src/gui/MainWindow.hpp
     src/gui/NotFoundDialog.hpp
     src/gui/SignalEstimator.hpp
@@ -232,6 +234,7 @@ if(BUILD_GUI)
     )
 
   add_executable(signal-estimator-gui
+    src/gui/ListValidator.cpp
     src/gui/Main.cpp
     src/gui/MainWindow.cpp
     src/gui/NotFoundDialog.cpp
