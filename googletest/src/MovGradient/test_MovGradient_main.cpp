@@ -1,4 +1,5 @@
-#include "src/test_MovAvg.cpp"
+#include <gtest/gtest.h>
+#include "test_MovGradient.cpp"
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

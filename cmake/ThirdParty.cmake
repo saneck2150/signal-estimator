@@ -205,13 +205,13 @@ if (BUILD_TESTING)
       LOG_INSTALL YES
   )
 
-  #include_directories(SYSTEM ${CMAKE_BINARY_DIR}/googletest-prefix/include)
+  include_directories(SYSTEM ${CMAKE_BINARY_DIR}/googletest-prefix/include)
 
-  #include_directories(${CMAKE_BINARY_DIR}/googletest-prefix/include)
-  #link_directories(${CMAKE_BINARY_DIR}/googletest-prefix/lib)
+  include_directories(${CMAKE_BINARY_DIR}/googletest-prefix/include)
+  link_directories(${CMAKE_BINARY_DIR}/googletest-prefix/lib)
 
-  #link_libraries(gtest)
-  #link_libraries(gtest_main)
+  link_libraries(gtest)
+  link_libraries(gtest_main)
 
 endif()
 

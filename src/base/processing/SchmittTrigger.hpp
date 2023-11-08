@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "core/Sample.hpp"
+#include "Sample.hpp"
 
 namespace signal_estimator {
 

@@ -329,6 +329,9 @@ if(NOT CMAKE_CROSSCOMPILING)
   )
 endif()
 
+include_directories(src/base/processing)
+include_directories(src/base/core)
+
 if(BUILD_TESTING)
 
   enable_testing()
